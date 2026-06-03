@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Swadisht — Invoice</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500&family=Caveat:wght@600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --ink: #1a1210;
+    --ink-2: #4a3f3b;
+    --ink-3: #8c7b74;
+    --accent: #b5451b;
+    --accent-light: #f9ece6;
+    --accent-mid: #e07048;
+    --surface: #ffffff;
+    --surface-2: #fdf8f6;
+    --surface-3: #f5ede8;
+    --border: #e8dbd6;
+    --border-strong: #c9b8b0;
+    --gold: #c09a5e;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background: #ede8e3;
+    background-image: 
+        radial-gradient(circle at 20% 50%, rgba(181,69,27,0.04) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(192,154,94,0.06) 0%, transparent 40%);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+    padding: 32px 16px 48px;
+    min-height: 100vh;
+}
+
+.page-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+/* Top utility bar */
+.utility-bar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.btn-util {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--ink-2);
+    padding: 9px 20px;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s;
+}
+
+.btn-util:hover { border-color: var(--border-strong); background: var(--surface-2); }
+
+.btn-util.primary {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+
+.btn-util.primary:hover { background: #9a3815; border-color: #9a3815; }
+
+/* Main invoice card */
+.invoice {
+    background: var(--surface);
+    border-radius: 3px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 12px 40px rgba(0,0,0,0.1);
+    overflow: hidden;
+    position: relative;
+}
+
+/* Decorative top stripe */
+.invoice::before {
+    content: '';
+    display: block;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--gold) 100%);
+}
+
+.invoice-inner {
+    padding: 44px 52px 52px;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 36px;
+}
+
+.brand h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.3px;
+    line-height: 1.1;
+    margin-bottom: 6px;
+}
+
+.brand h1 span {
+    color: var(--accent);
+}
+
+.brand-tagline {
+    font-size: 12px;
+    color: var(--ink-3);
+    font-weight: 300;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.brand-details {
+    font-size: 12.5px;
+    color: var(--ink-2);
+    line-height: 1.7;
+}
+
+.brand-details strong {
+    color: var(--ink);
+    font-weight: 500;
+}
+
+.invoice-badge {
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.invoice-badge .label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 400;
+    margin-bottom: 4px;
+}
+
+.invoice-badge .word {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--surface-3);
+    -webkit-text-stroke: 1.5px var(--border-strong);
+    letter-spacing: 2px;
+    line-height: 1;
+}
+
+/* Divider */
+.divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0 0 32px;
+}
+
+/* Meta grid */
+.meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-bottom: 36px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.meta-col {
+    padding: 20px 24px;
+}
+
+.meta-col:first-child {
+    border-right: 1px solid var(--border);
+}
+
+.meta-col-label {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.field-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+
+.field-row:last-child { margin-bottom: 0; }
+
+.field-row label {
+    font-size: 12px;
+    color: var(--ink-3);
+    width: 76px;
+    flex-shrink: 0;
+}
+
+.field-row input {
+    flex: 1;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    padding: 5px 0;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    color: var(--ink);
+    outline: none;
+    background: transparent;
+    transition: border-color 0.15s;
+}
+
+.field-row input:focus {
+    border-bottom-color: var(--accent);
+}
+
+.field-row input::placeholder {
+    color: #c4b5af;
+}
+
+/* Items table */
+.table-section {
+    margin-bottom: 8px;
+}
+
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 560px;
+}
+
+thead tr {
+    background: var(--surface-2);
+    border-bottom: 2px solid var(--border);
+}
+
+th {
+    font-size: 10px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 500;
+    padding: 12px 12px;
+    text-align: left;
+}
+
+th.center { text-align: center; }
+th.right { text-align: right; }
+
+tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+}
+
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--surface-2); }
+
+td {
+    padding: 6px 4px;
+    vertical-align: middle;
+}
+
+td input {
+    width: 100%;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 7px 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    color: var(--ink);
+    background: transparent;
+    outline: none;
+    transition: all 0.15s;
+}
+
+td input:hover, td input:focus {
+    border-color: var(--border);
+    background: var(--surface-2);
+}
+
+td input:focus { border-color: var(--accent-mid); }
+
+td input.center { text-align: center; }
+td input.right { text-align: right; }
+
+.sno {
+    font-size: 12px;
+    color: var(--ink-3);
+    text-align: center;
+    width: 40px;
+    font-weight: 300;
+    user-select: none;
+}
+
+.amount-cell {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    color: var(--ink);
+    text-align: right;
+    padding-right: 12px;
+    min-width: 80px;
+    white-space: nowrap;
+}
+
+.btn-del {
+    background: none;
+    border: none;
+    color: var(--border-strong);
+    cursor: pointer;
+    font-size: 18px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.15s;
+    margin: auto;
+}
+
+.btn-del:hover { color: var(--accent); background: var(--accent-light); }
+
+/* Add row button */
+.add-row-wrap {
+    padding: 12px 0 28px;
+}
+
+.btn-add-row {
+    background: none;
+    border: 1px dashed var(--border-strong);
+    color: var(--ink-3);
+    padding: 9px 20px;
+    border-radius: 5px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.2px;
+}
+
+.btn-add-row:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-light);
+}
+
+/* Footer */
+.footer-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+}
+
+/* Terms */
+.terms {
+    flex: 1.2;
+}
+
+.terms h3 {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.terms ul {
+    list-style: none;
+    padding: 0;
+}
+
+.terms ul li {
+    font-size: 12px;
+    color: var(--ink-3);
+    line-height: 1.6;
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 4px;
+}
+
+.terms ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border-strong);
+}
+
+/* Total + Signature */
+.total-sign {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    min-width: 240px;
+}
+
+.totals-block {
+    width: 100%;
+    margin-bottom: 28px;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.total-row.subtotal-row {
+    font-size: 13px;
+    color: var(--ink-2);
+}
+
+.total-row.grand {
+    border-bottom: none;
+    padding-top: 12px;
+    margin-top: 4px;
+    align-items: baseline;
+}
+
+.total-row.grand .label {
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 400;
+}
+
+.total-row.grand .value {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+/* Signature block */
+.sig-block {
+    text-align: center;
+    width: 180px;
+    position: relative;
+}
+
+.sig-name {
+    font-family: 'Caveat', cursive;
+    font-size: 36px;
+    font-weight: 600;
+    color: #1a2c6e;
+    display: block;
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.stamp-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-5deg);
+    opacity: 0.85;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.stamp-overlay img {
+    max-height: 120px;
+}
+
+.sig-line {
+    display: block;
+    width: 100%;
+    border-top: 1px solid var(--border-strong);
+    padding-top: 6px;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 500;
+}
+
+/* Watermark PAID */
+.watermark {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-35deg);
+    font-family: 'Playfair Display', serif;
+    font-size: 120px;
+    font-weight: 700;
+    color: rgba(181,69,27,0.06);
+    letter-spacing: 10px;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    white-space: nowrap;
+}
+
+/* Mobile */
+@media screen and (max-width: 600px) {
+    .invoice-inner { padding: 28px 20px 36px; }
+    .header { flex-direction: column; gap: 16px; }
+    .invoice-badge { text-align: left; }
+    .meta-grid { grid-template-columns: 1fr; }
+    .meta-col:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+    .footer-grid { flex-direction: column; gap: 24px; }
+    .total-sign { align-items: flex-start; min-width: unset; width: 100%; }
+    .totals-block { width: 100%; }
+}
+
+/* Print */
+@media print {
+    @page { size: A4 portrait; margin: 14mm; }
+    body { background: #fff !important; padding: 0 !important; }
+    .utility-bar { display: none !important; }
+    .add-row-wrap { display: none !important; }
+    .btn-del { display: none !important; }
+    .invoice { box-shadow: none !important; }
+    .invoice::before { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .surface-2, thead tr { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    td input, .field-row input {
+        border: none !important;
+        background: transparent !important;
+    }
+    .footer-grid { flex-direction: row !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+    <div class="utility-bar">
+        <button class="btn-util" onclick="clearForm()">Clear</button>
+        <button class="btn-util primary" onclick="handlePrint()">↓ Save / Print</button>
+    </div>
+
+    <div class="invoice">
+        <div class="watermark" id="watermark">PAID</div>
+
+        <div class="invoice-inner">
+
+            <!-- Header -->
+            <div class="header">
+                <div class="brand">
+                    <p class="brand-tagline">Homemade · Fresh · Wholesome</p>
+                    <h1>Swadisht <span>Tiffin</span> Service</h1>
+                    <div class="brand-details">
+                        Meerut Cantt, Uttar Pradesh<br>
+                        <strong>FSSAI:</strong> 22723357000428 &nbsp;·&nbsp; Lunch · Dinner · Catering
+                    </div>
+                </div>
+                <div class="invoice-badge">
+                    <div class="label">Document</div>
+                    <div class="word">INVOICE</div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- Meta -->
+            <div class="meta-grid">
+                <div class="meta-col">
+                    <div class="meta-col-label">Billed To</div>
+                    <div class="field-row">
+                        <label>Client</label>
+                        <input type="text" id="clientName" placeholder="Client name">
+                    </div>
+                </div>
+                <div class="meta-col">
+                    <div class="meta-col-label">Invoice Details</div>
+                    <div class="field-row">
+                        <label>Date</label>
+                        <input type="date" id="invoiceDate">
+                    </div>
+                    <div class="field-row">
+                        <label>Invoice No.</label>
+                        <input type="text" id="invoiceNo" placeholder="ST-2026-001">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-section">
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:5%">#</th>
+                                <th style="width:50%">Description</th>
+                                <th style="width:11%" class="center">Qty</th>
+                                <th style="width:16%" class="right">Rate (₹)</th>
+                                <th style="width:14%" class="right">Amount</th>
+                                <th style="width:4%"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="invoiceBody">
+                            <!-- Rows injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="add-row-wrap">
+                <button class="btn-add-row" onclick="addRow()">+ Add item</button>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer-grid">
+
+                <div class="terms">
+                    <h3>Terms &amp; Notes</h3>
+                    <ul>
+                        <li>Payment due within 7 days of invoice date.</li>
+                        <li>Cancellations must be informed at least 3 hours prior to delivery.</li>
+                        <li>Thank you for choosing Swadisht — healthy &amp; homemade!</li>
+                    </ul>
+                </div>
+
+                <div class="total-sign">
+                    <div class="totals-block">
+                        <div class="total-row subtotal-row">
+                            <span>Subtotal</span>
+                            <span id="subtotalDisplay">₹0</span>
+                        </div>
+                        <div class="total-row grand">
+                            <span class="label">Grand Total</span>
+                            <span class="value" id="grandTotal">₹0</span>
+                        </div>
+                    </div>
+
+                    <div class="sig-block">
+                        <div class="stamp-overlay">
+                            <img src="stamp.png" alt="Stamp" onerror="this.style.display='none'">
+                        </div>
+                        <span class="sig-name">Shallini</span>
+                        <span class="sig-line">Authorized Signatory</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    const today = new Date();
+    document.getElementById('invoiceDate').valueAsDate = today;
+
+    let rowCount = 0;
+
+    function createRow() {
+        rowCount++;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td class="sno">${rowCount}</td>
+            <td><input type="text" placeholder="e.g., Monthly Veg Tiffin (26 meals)"></td>
+            <td><input type="number" class="center" min="0" value="1" oninput="recalc(this)"></td>
+            <td><input type="number" class="right" min="0" placeholder="0" oninput="recalc(this)"></td>
+            <td class="amount-cell">₹0</td>
+            <td><button class="btn-del" onclick="delRow(this)" title="Remove">✕</button></td>
+        `;
+        return tr;
+    }
+
+    function addRow() {
+        document.getElementById('invoiceBody').appendChild(createRow());
+    }
+
+    function delRow(btn) {
+        const tbody = document.getElementById('invoiceBody');
+        if (tbody.rows.length <= 1) {
+            alert('At least one item is required.');
+            return;
+        }
+        btn.closest('tr').remove();
+        refreshSNos();
+        calcTotals();
+    }
+
+    function refreshSNos() {
+        document.querySelectorAll('#invoiceBody tr').forEach((tr, i) => {
+            tr.querySelector('.sno').textContent = i + 1;
+        });
+    }
+
+    function recalc(input) {
+        const tr = input.closest('tr');
+        const qty = parseFloat(tr.querySelectorAll('input')[1].value) || 0;
+        const rate = parseFloat(tr.querySelectorAll('input')[2].value) || 0;
+        tr.querySelector('.amount-cell').textContent = '₹' + fmt(qty * rate);
+        calcTotals();
+    }
+
+    function calcTotals() {
+        let total = 0;
+        document.querySelectorAll('#invoiceBody tr').forEach(tr => {
+            const inputs = tr.querySelectorAll('input');
+            const qty = parseFloat(inputs[1]?.value) || 0;
+            const rate = parseFloat(inputs[2]?.value) || 0;
+            total += qty * rate;
+        });
+        const str = '₹' + fmt(total);
+        document.getElementById('subtotalDisplay').textContent = str;
+        document.getElementById('grandTotal').textContent = str;
+    }
+
+    function fmt(n) {
+        return n.toLocaleString('en-IN', { maximumFractionDigits: 0 });
+    }
+
+    function clearForm() {
+        if (!confirm('Clear all invoice data?')) return;
+        document.getElementById('clientName').value = '';
+        document.getElementById('invoiceNo').value = '';
+        document.getElementById('invoiceBody').innerHTML = '';
+        rowCount = 0;
+        addRow();
+        calcTotals();
+    }
+
+    function handlePrint() {
+        setTimeout(() => window.print(), 150);
+    }
+
+    // Init with two rows
+    addRow();
+    addRow();
+</script>
+
+</body>
+</html>
