@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Swadisht — Invoice</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
 
 <style>
 :root {
@@ -229,6 +229,22 @@ body {
 
 .field-row input::placeholder {
     color: #c4b5af;
+}
+
+/* Specific styling for long client names to sit under the label */
+.field-row.client-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.field-row.client-row label {
+    width: 100%;
+}
+
+.field-row.client-row input {
+    width: 100%;
+    font-weight: 700; /* Makes the client name input text bold */
 }
 
 /* Items table */
@@ -561,7 +577,6 @@ td input.right { text-align: right; }
 
         <div class="invoice-inner">
 
-            <!-- Header -->
             <div class="header">
                 <div class="brand">
                     <p class="brand-tagline">Homemade · Fresh · Wholesome</p>
@@ -581,11 +596,10 @@ td input.right { text-align: right; }
 
             <hr class="divider">
 
-            <!-- Meta -->
             <div class="meta-grid">
                 <div class="meta-col">
                     <div class="meta-col-label">Billed To</div>
-                    <div class="field-row">
+                    <div class="field-row client-row">
                         <label>Client</label>
                         <input type="text" id="clientName" placeholder="Client name">
                     </div>
@@ -603,7 +617,6 @@ td input.right { text-align: right; }
                 </div>
             </div>
 
-            <!-- Table -->
             <div class="table-section">
                 <div class="table-wrap">
                     <table>
@@ -618,8 +631,7 @@ td input.right { text-align: right; }
                             </tr>
                         </thead>
                         <tbody id="invoiceBody">
-                            <!-- Rows injected by JS -->
-                        </tbody>
+                            </tbody>
                     </table>
                 </div>
             </div>
@@ -628,11 +640,9 @@ td input.right { text-align: right; }
                 <button class="btn-add-row" onclick="addRow()">+ Add item</button>
             </div>
 
-            <!-- Footer -->
             <div class="footer-grid">
 
                 <div class="left-details">
-    <!-- Bank Details Section -->
     <div class="bank-details">
         <h3>Bank Details</h3>
         <div class="field-row" style="display: flex; align-items: center; margin-bottom: 8px; gap: 10px;">
@@ -654,7 +664,6 @@ td input.right { text-align: right; }
         </div>
     </div>
 
-    <!-- Terms & Notes Section -->
     <div class="terms" style="margin-top: 12px;">
         <h3>Terms &amp; Notes</h3>
         <ul>
@@ -745,9 +754,9 @@ td input.right { text-align: right; }
     function calcTotals() {
         let total = 0;
         document.querySelectorAll('#invoiceBody tr').forEach(tr => {
-            const inputs = tr.querySelectorAll('input');
-            const qty = parseFloat(inputs[1]?.value) || 0;
-            const rate = parseFloat(inputs[2]?.value) || 0;
+            box_inputs = tr.querySelectorAll('input');
+            const qty = parseFloat(box_inputs[1]?.value) || 0;
+            const rate = parseFloat(box_inputs[2]?.value) || 0;
             total += qty * rate;
         });
         const str = '₹' + fmt(total);
