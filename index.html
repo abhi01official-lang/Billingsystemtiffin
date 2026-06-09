@@ -242,9 +242,29 @@ body {
     width: 100%;
 }
 
-.field-row.client-row input {
+/* Applied Textarea Styles for Client Input */
+#clientName {
     width: 100%;
-    font-weight: 700; /* Makes the client name input text bold */
+    font-weight: 700;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    padding: 5px 0;
+    font-family: inherit;
+    font-size: 13.5px;
+    color: var(--ink);
+    outline: none;
+    background: transparent;
+    transition: border-color 0.15s;
+    resize: none;
+    overflow: hidden;
+}
+
+#clientName:focus {
+    border-bottom-color: var(--accent);
+}
+
+#clientName::placeholder {
+    color: #c4b5af;
 }
 
 /* Items table */
@@ -555,7 +575,7 @@ td input.right { text-align: right; }
     .invoice { box-shadow: none !important; }
     .invoice::before { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .surface-2, thead tr { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    td input, .field-row input {
+    td input, .field-row input, #clientName {
         border: none !important;
         background: transparent !important;
     }
@@ -582,11 +602,10 @@ td input.right { text-align: right; }
                     <p class="brand-tagline">Homemade · Fresh · Wholesome</p>
                     <h1>Swadisht <span>Tiffin</span> Service</h1>
                     <div class="brand-details">
-    Meerut Cantt, Uttar Pradesh<br>
-    <strong>FSSAI:</strong> 22723357000428 &nbsp;·&nbsp; <strong>PAN:</strong> AGOPN0299E<br>
-    Lunch · Dinner · Catering
-</div>
-
+                        Meerut Cantt, Uttar Pradesh<br>
+                        <strong>FSSAI:</strong> 22723357000428 &nbsp;·&nbsp; <strong>PAN:</strong> AGOPN0299E<br>
+                        Lunch · Dinner · Catering
+                    </div>
                 </div>
                 <div class="invoice-badge">
                     <div class="label">Document</div>
@@ -597,14 +616,12 @@ td input.right { text-align: right; }
             <hr class="divider">
 
             <div class="meta-grid">
-    <div class="meta-col">
-        <div class="meta-col-label">Billed To</div>
-        <div class="field-row client-row">
-            <label>Client</label>
-            <textarea id="clientName" placeholder="Client name" rows="2"></textarea>
-        </div>
-    </div>
-</div>
+                <div class="meta-col">
+                    <div class="meta-col-label">Billed To</div>
+                    <div class="field-row client-row">
+                        <label>Client</label>
+                        <textarea id="clientName" placeholder="Client name" rows="2"></textarea>
+                    </div>
                 </div>
                 <div class="meta-col">
                     <div class="meta-col-label">Invoice Details</div>
@@ -633,7 +650,7 @@ td input.right { text-align: right; }
                             </tr>
                         </thead>
                         <tbody id="invoiceBody">
-                            </tbody>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -643,39 +660,36 @@ td input.right { text-align: right; }
             </div>
 
             <div class="footer-grid">
-
                 <div class="left-details">
-    <div class="bank-details">
-        <h3>Bank Details</h3>
-        <div class="field-row" style="display: flex; align-items: center; margin-bottom: 8px; gap: 10px;">
-            <label style="font-size: 12px; color: var(--ink-3); width: 85px; flex-shrink: 0;">Bank Name</label>
-            <input type="text" id="BankName" placeholder="Enter Bank Name" style="flex: 1; border: none; border-bottom: 1px solid var(--border); padding: 5px 0; font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--ink); outline: none; background: transparent;">
-        </div>
-        <div class="field-row" style="display: flex; align-items: center; gap: 10px;">
-            <label style="font-size: 12px; color: var(--ink-3); width: 85px; flex-shrink: 0;">Account Holder Name</label>
-            <input type="text" id="accounthn" placeholder="Enter Account Holder Name" style="flex: 1; border: none; border-bottom: 1px solid var(--border); padding: 5px 0; font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--ink); outline: none; background: transparent;">
-        </div>
-    </div>
-        <div class="field-row" style="display: flex; align-items: center; margin-bottom: 8px; gap: 10px;">
-            <label style="font-size: 12px; color: var(--ink-3); width: 85px; flex-shrink: 0;">Account No.</label>
-            <input type="text" id="accountNo" placeholder="Enter Account Number" style="flex: 1; border: none; border-bottom: 1px solid var(--border); padding: 5px 0; font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--ink); outline: none; background: transparent;">
-        </div>
-        <div class="field-row" style="display: flex; align-items: center; gap: 10px;">
-            <label style="font-size: 12px; color: var(--ink-3); width: 85px; flex-shrink: 0;">IFSC Code</label>
-            <input type="text" id="ifscCode" placeholder="Enter IFSC Code" style="flex: 1; border: none; border-bottom: 1px solid var(--border); padding: 5px 0; font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--ink); outline: none; background: transparent;">
-        </div>
-    </div>
+                    <div class="bank-details">
+                        <h3>Bank Details</h3>
+                        <div class="field-row" style="display: flex; align-items: center; margin-bottom: 8px; gap: 10px;">
+                            <label style="font-size: 12px; color: var(--ink-3); width: 85px; flex-shrink: 0;">Bank Name</label>
+                            <input type="text" id="BankName" placeholder="Enter Bank Name" style="flex: 1; border: none; border-bottom: 1px solid var(--border); padding: 5px 0; font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--ink); outline: none; background: transparent;">
+                        </div>
+                        <div class="field-row" style="display: flex; align-items: center; gap: 10px;">
+                            <label style="font-size: 12px; color: var(--ink-3); width: 85px; flex-shrink: 0;">Account Holder Name</label>
+                            <input type="text" id="accounthn" placeholder="Enter Account Holder Name" style="flex: 1; border: none; border-bottom: 1px solid var(--border); padding: 5px 0; font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--ink); outline: none; background: transparent;">
+                        </div>
+                    </div>
+                    <div class="field-row" style="display: flex; align-items: center; margin-bottom: 8px; gap: 10px;">
+                        <label style="font-size: 12px; color: var(--ink-3); width: 85px; flex-shrink: 0;">Account No.</label>
+                        <input type="text" id="accountNo" placeholder="Enter Account Number" style="flex: 1; border: none; border-bottom: 1px solid var(--border); padding: 5px 0; font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--ink); outline: none; background: transparent;">
+                    </div>
+                    <div class="field-row" style="display: flex; align-items: center; gap: 10px;">
+                        <label style="font-size: 12px; color: var(--ink-3); width: 85px; flex-shrink: 0;">IFSC Code</label>
+                        <input type="text" id="ifscCode" placeholder="Enter IFSC Code" style="flex: 1; border: none; border-bottom: 1px solid var(--border); padding: 5px 0; font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--ink); outline: none; background: transparent;">
+                    </div>
 
-    <div class="terms" style="margin-top: 12px;">
-        <h3>Terms &amp; Notes</h3>
-        <ul>
-            <li>Payment due within 7 days of invoice date.</li>
-            <li>Cancellations must be informed at least 3 hours prior to delivery.</li>
-            <li>Thank you for choosing Swadisht — healthy &amp; homemade!</li>
-        </ul>
-    </div>
-</div>
-
+                    <div class="terms" style="margin-top: 12px;">
+                        <h3>Terms &amp; Notes</h3>
+                        <ul>
+                            <li>Payment due within 7 days of invoice date.</li>
+                            <li>Cancellations must be informed at least 3 hours prior to delivery.</li>
+                            <li>Thank you for choosing Swadisht — healthy &amp; homemade!</li>
+                        </ul>
+                    </div>
+                </div>
 
                 <div class="total-sign">
                     <div class="totals-block">
@@ -697,7 +711,6 @@ td input.right { text-align: right; }
                         <span class="sig-line">Authorized Signatory</span>
                     </div>
                 </div>
-
             </div>
 
         </div>
