@@ -579,6 +579,10 @@ td input.right { text-align: right; }
         border: none !important;
         background: transparent !important;
     }
+    textarea {
+        height: auto !important;
+        overflow: visible !important;
+    }
     .footer-grid { flex-direction: row !important; }
 }
 </style>
@@ -616,27 +620,24 @@ td input.right { text-align: right; }
             <hr class="divider">
 
             <div class="meta-grid">
-    <div class="meta-col">
-        <div class="meta-col-label">Billed To</div>
-        
-        <!-- Client Name Row (Uses contenteditable to safely auto-expand without breaking scripts) -->
-        <div class="field-row client-row" style="margin-bottom: 12px;">
-            <label style="display: block; font-weight: bold; margin-bottom: 4px;">Client</label>
-            <div id="clientName" 
-                 contenteditable="true" 
-                 role="textbox"
-                 aria-placeholder="Client name"
-                 style="width: 100%; min-height: 40px; max-height: auto; line-height: 1.4; padding: 6px; border: 1px solid #ccc; box-sizing: border-box; background: #fff; white-space: pre-wrap; word-wrap: break-word;"></div>
-        </div>
+                <!-- Column 1: Billed To Details -->
+                <div class="meta-col">
+                    <div class="meta-col-label">Billed To</div>
+                    
+                    <!-- Client Name Row -->
+                    <div class="field-row client-row" style="margin-bottom: 12px;">
+                        <label style="font-weight: bold;">Client</label>
+                        <textarea id="clientName" placeholder="Client name" rows="3"></textarea>
+                    </div>
 
-        <!-- Phone Number Row -->
-        <div class="field-row phone-row">
-            <label style="display: block; font-weight: bold; margin-bottom: 4px;">Phone</label>
-            <input type="tel" id="clientPhone" placeholder="+91 XXXXX XXXXX" style="width: 100%; padding: 6px; box-sizing: border-box; border: 1px solid #ccc;" />
-        </div>
-    </div>
-</div>
+                    <!-- Phone Number Row -->
+                    <div class="field-row">
+                        <label>Phone</label>
+                        <input type="tel" id="clientPhone" placeholder="+91 XXXXX XXXXX">
+                    </div>
                 </div>
+
+                <!-- Column 2: Invoice Info -->
                 <div class="meta-col">
                     <div class="meta-col-label">Invoice Details</div>
                     <div class="field-row">
@@ -803,6 +804,7 @@ td input.right { text-align: right; }
         document.getElementById('invoiceNo').value = '';
         document.getElementById('invoiceBody').innerHTML = '';
         rowCount = 0;
+        addRow();
         addRow();
         calcTotals();
     }
