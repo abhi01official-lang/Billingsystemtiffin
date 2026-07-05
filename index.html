@@ -620,10 +620,10 @@ td input.right { text-align: right; }
         <div class="meta-col-label">Billed To</div>
         
         <!-- Client Name Row -->
-        <div class="field-row client-row" style="margin-bottom: 10px;">
+        <div class="field-row client-row" style="margin-bottom: 12px;">
             <label style="display: block; font-weight: bold; margin-bottom: 4px;">Client</label>
-            <!-- Increased height and added print-specific style override to prevent cutoff -->
-            <textarea id="clientName" placeholder="Client name" rows="2" style="width: 100%; min-height: 50px; resize: vertical; line-height: 1.4; overflow: hidden;"></textarea>
+            <!-- Changed rows to 3, removed min-height restrictions, and added explicit print handling instructions -->
+            <textarea id="clientName" placeholder="Client name" rows="3" style="width: 100%; height: auto; line-height: 1.4; resize: vertical; display: block; box-sizing: border-box;"></textarea>
         </div>
 
         <!-- Phone Number Row -->
