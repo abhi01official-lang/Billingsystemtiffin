@@ -263,8 +263,10 @@ body {
     border-bottom-color: var(--accent);
 }
 
-#clientName::placeholder {
+#clientName[contenteditable="true"]:empty:before {
+    content: attr(aria-placeholder);
     color: #c4b5af;
+    font-weight: 400;
 }
 
 /* Items table */
@@ -579,10 +581,6 @@ td input.right { text-align: right; }
         border: none !important;
         background: transparent !important;
     }
-    textarea {
-        height: auto !important;
-        overflow: visible !important;
-    }
     .footer-grid { flex-direction: row !important; }
 }
 </style>
@@ -620,24 +618,26 @@ td input.right { text-align: right; }
             <hr class="divider">
 
             <div class="meta-grid">
-                <!-- Column 1: Billed To Details -->
                 <div class="meta-col">
                     <div class="meta-col-label">Billed To</div>
                     
                     <!-- Client Name Row -->
                     <div class="field-row client-row" style="margin-bottom: 12px;">
-                        <label style="font-weight: bold;">Client</label>
-                        <textarea id="clientName" placeholder="Client name" rows="3"></textarea>
+                        <label style="display: block; font-weight: bold; margin-bottom: 4px;">Client</label>
+                        <div id="clientName" 
+                             contenteditable="true" 
+                             role="textbox"
+                             aria-placeholder="Client name"
+                             style="width: 100%; min-height: 40px; max-height: auto; line-height: 1.4; padding: 6px; border: 1px solid #ccc; box-sizing: border-box; background: #fff; white-space: pre-wrap; word-wrap: break-word;"></div>
                     </div>
 
                     <!-- Phone Number Row -->
-                    <div class="field-row">
-                        <label>Phone</label>
-                        <input type="tel" id="clientPhone" placeholder="+91 XXXXX XXXXX">
+                    <div class="field-row phone-row">
+                        <label style="display: block; font-weight: bold; margin-bottom: 4px;">Phone</label>
+                        <input type="tel" id="clientPhone" placeholder="+91 XXXXX XXXXX" style="width: 100%; padding: 6px; box-sizing: border-box; border: 1px solid #ccc;" />
                     </div>
                 </div>
-
-                <!-- Column 2: Invoice Info -->
+                
                 <div class="meta-col">
                     <div class="meta-col-label">Invoice Details</div>
                     <div class="field-row">
@@ -683,11 +683,11 @@ td input.right { text-align: right; }
                             <input type="text" id="BankName" placeholder="Enter Bank Name" style="flex: 1; border: none; border-bottom: 1px solid var(--border); padding: 5px 0; font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--ink); outline: none; background: transparent;">
                         </div>
                         <div class="field-row" style="display: flex; align-items: center; gap: 10px;">
-                            <label style="font-size: 12px; color: var(--ink-3); width: 85px; flex-shrink: 0;">Account Holder Name</label>
+                            <label style="font-size: 12px; color: var(--ink-3); width: 85px; flex-shrink: 0;">Account Holder</label>
                             <input type="text" id="accounthn" placeholder="Enter Account Holder Name" style="flex: 1; border: none; border-bottom: 1px solid var(--border); padding: 5px 0; font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--ink); outline: none; background: transparent;">
                         </div>
                     </div>
-                    <div class="field-row" style="display: flex; align-items: center; margin-bottom: 8px; gap: 10px;">
+                    <div class="field-row" style="display: flex; align-items: center; margin-bottom: 8px; gap: 10px; margin-top: 8px;">
                         <label style="font-size: 12px; color: var(--ink-3); width: 85px; flex-shrink: 0;">Account No.</label>
                         <input type="text" id="accountNo" placeholder="Enter Account Number" style="flex: 1; border: none; border-bottom: 1px solid var(--border); padding: 5px 0; font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--ink); outline: none; background: transparent;">
                     </div>
@@ -800,17 +800,17 @@ td input.right { text-align: right; }
 
     function clearForm() {
         if (!confirm('Clear all invoice data?')) return;
-        document.getElementById('clientName').value = '';
+        document.getElementById('clientName').innerHTML = '';
+        document.getElementById('clientPhone').value = '';
         document.getElementById('invoiceNo').value = '';
+        document.getElementById('BankName').value = '';
+        document.getElementById('accounthn').value = '';
+        document.getElementById('accountNo').value = '';
+        document.getElementById('ifscCode').value = '';
         document.getElementById('invoiceBody').innerHTML = '';
         rowCount = 0;
         addRow();
-        addRow();
         calcTotals();
-    }
-
-    function handlePrint() {
-        setTimeout(() => window.print(), 150);
     }
 
     // Init with two rows
